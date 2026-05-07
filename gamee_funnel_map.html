@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gamee — Full Campaign Funnel</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #ffffff; color: #1a1a1a; padding: 24px 20px 32px; max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #888; margin-bottom: 20px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #aaa; margin-bottom: 8px; padding-left: 2px; }
+  .funnel-stage { margin-bottom: 6px; }
+  .stage-header { font-size: 11px; font-weight: 600; padding: 7px 14px; border-radius: 6px 6px 0 0; }
+  .top-header { background: #FAECE7; color: #993C1D; }
+  .mid-header { background: #FAEEDA; color: #8A6A1A; }
+  .bot-header { background: #EAF3DE; color: #3B6D11; }
+  .stage-body { background: #f9f9f8; border: 0.5px solid #e5e3dc; border-top: none; border-radius: 0 0 8px 8px; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .service-chip { background: #fff; border: 0.5px solid #d8d5cc; border-radius: 20px; padding: 5px 13px; font-size: 12px; color: #333; cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; white-space: nowrap; user-select: none; }
+  .service-chip:hover { border-color: #aaa; background: #f5f4f0; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+  .service-chip.active { border-color: #0a1628; background: #0a1628; color: #fff; }
+  .service-chip.dual { border-style: dashed; }
+  .arrow-wrap { display: flex; justify-content: center; margin: 4px 0; }
+  .arrow-down { width: 1px; height: 18px; background: #d0cec5; position: relative; }
+  .arrow-down::after { content: ''; position: absolute; bottom: -4px; left: -3px; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 5px solid #d0cec5; }
+  .detail-panel { background: #fff; border: 1px solid #e0ddd5; border-radius: 10px; padding: 16px 18px; margin-top: 14px; display: none; position: relative; }
+  .detail-panel.visible { display: block; animation: fadeIn 0.15s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .detail-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; }
+  .tag-top { background: #FAECE7; color: #993C1D; }
+  .tag-mid { background: #FAEEDA; color: #8A6A1A; }
+  .tag-bot { background: #EAF3DE; color: #3B6D11; }
+  .detail-title { font-size: 14px; font-weight: 600; color: #111; margin-bottom: 7px; }
+  .detail-desc { font-size: 13px; color: #555; line-height: 1.65; margin-bottom: 10px; }
+  .detail-conn-label { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .detail-conn { font-size: 12px; color: #777; line-height: 1.6; }
+  .detail-conn strong { color: #444; }
+  .close-btn { position: absolute; top: 12px; right: 14px; font-size: 12px; color: #bbb; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
+  .close-btn:hover { color: #666; background: #f0ede6; }
+  .connections-section { margin-top: 20px; }
+  .conn-grid { display: flex; flex-direction: column; gap: 7px; }
+  .conn-row { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; color: #666; line-height: 1.55; }
+  .conn-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .dot-red { background: #D85A30; }
+  .dot-amber { background: #BA7517; }
+  .dot-green { background: #639922; }
+  .outcomes-section { margin-top: 20px; background: #f9f9f8; border-radius: 8px; padding: 14px 16px; border: 0.5px solid #e5e3dc; }
+  .outcome-title { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .outcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+  .outcome-card { background: #fff; border: 0.5px solid #e5e3dc; border-radius: 6px; padding: 9px 11px; font-size: 12px; color: #666; line-height: 1.45; }
+  .outcome-card strong { display: block; font-size: 12px; font-weight: 600; color: #222; margin-bottom: 2px; }
+  .divider { height: 0.5px; background: #ece9e0; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<h1>Gamee — Full Campaign Funnel</h1>
+<p class="subtitle">Click any service to explore what it does and how it connects to the rest of the campaign</p>
+
+<div class="section-label">Services by funnel stage</div>
+
+<div class="funnel-stage">
+  <div class="stage-header top-header">Top of funnel — reach &amp; awareness</div>
+  <div class="stage-body">
+    <div class="service-chip" onclick="show('cmc-top', this)">CMC discovery</div>
+    <div class="service-chip" onclick="show('kols', this)">X KOLs</div>
+    <div class="service-chip" onclick="show('wsb', this)">WallStreetBets</div>
+    <div class="service-chip" onclick="show('reddit', this)">Reddit</div>
+    <div class="service-chip" onclick="show('zoomies', this)">Zoomies</div>
+    <div class="service-chip" onclick="show('clipping', this)">Podcast clipping</div>
+  </div>
+</div>
+
+<div class="arrow-wrap"><div class="arrow-down"></div></div>
+
+<div class="funnel-stage">
+  <div class="stage-header mid-header">Mid-funnel — engagement &amp; conversion</div>
+  <div class="stage-body">
+    <div class="service-chip dual" onclick="show('cmc-mid', this)">CMC landing page ↕</div>
+    <div class="service-chip" onclick="show('telegram', this)">Telegram</div>
+    <div class="service-chip" onclick="show('discord', this)">Discord</div>
+    <div class="service-chip" onclick="show('livestreams', this)">Livestreams</div>
+  </div>
+</div>
+
+<div class="arrow-wrap"><div class="arrow-down"></div></div>
+
+<div class="funnel-stage">
+  <div class="stage-header bot-header">Bottom of funnel — conversion &amp; growth</div>
+  <div class="stage-body">
+    <div class="service-chip" onclick="show('token-fomo', this)">Token FOMO</div>
+    <div class="service-chip" onclick="show('mau', this)">Increased MAU</div>
+    <div class="service-chip" onclick="show('revenue', this)">Platform revenue</div>
+    <div class="service-chip" onclick="show('new-communities', this)">New communities</div>
+  </div>
+</div>
+
+<div class="detail-panel" id="detail-panel">
+  <span class="close-btn" onclick="closePanel()">✕</span>
+  <div class="detail-tag" id="d-tag"></div>
+  <div class="detail-title" id="d-title"></div>
+  <div class="detail-desc" id="d-desc"></div>
+  <div class="detail-conn-label">Funnel connections</div>
+  <div class="detail-conn" id="d-conn"></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="connections-section">
+  <div class="section-label" style="margin-bottom:10px">How the services connect</div>
+  <div class="conn-grid">
+    <div class="conn-row"><div class="conn-dot dot-red"></div><div>WSB &amp; X KOLs drive speculator traffic → CMC landing page converts them into holders</div></div>
+    <div class="conn-row"><div class="conn-dot dot-red"></div><div>Reddit &amp; Zoomies bring new player communities → Telegram &amp; Discord retain them</div></div>
+    <div class="conn-row"><div class="conn-dot dot-red"></div><div>Podcast clipping distributes every session → X KOLs amplify the strongest clips</div></div>
+    <div class="conn-row"><div class="conn-dot dot-amber"></div><div>Telegram &amp; Discord overhaul ensures all inbound traffic has somewhere worth landing</div></div>
+    <div class="conn-row"><div class="conn-dot dot-amber"></div><div>Livestreams keep the team visible → trust signal for community members and token holders alike</div></div>
+    <div class="conn-row"><div class="conn-dot dot-amber"></div><div>CMC does two jobs: discovery in external communities (top of funnel) + landing page conversion (mid-funnel)</div></div>
+    <div class="conn-row"><div class="conn-dot dot-green"></div><div>Engaged community → more daily plays → MAU growth → revenue → bullish token signal → cycle repeats</div></div>
+    <div class="conn-row"><div class="conn-dot dot-green"></div><div>Each Zoomies IP season brings its own community at zero cost, compounding reach every month</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="outcomes-section">
+  <div class="outcome-title">Downstream outcomes</div>
+  <div class="outcome-grid">
+    <div class="outcome-card"><strong>Bigger community</strong>Active, retained members across TG, Discord &amp; X</div>
+    <div class="outcome-card"><strong>Higher MAU</strong>Daily check-ins driven by engagement programmes</div>
+    <div class="outcome-card"><strong>Platform revenue</strong>More plays from existing &amp; new communities</div>
+    <div class="outcome-card"><strong>Brand recognition</strong>Gamee visible beyond Web3-native circles</div>
+    <div class="outcome-card"><strong>Token conviction</strong>Sentiment, volume &amp; FOMO around the buyback</div>
+    <div class="outcome-card"><strong>Web3 gaming leader</strong>Positioned at the forefront of next-gen Web3 gaming</div>
+  </div>
+</div>
+
+<script>
+const data = {
+  'cmc-top': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'CMC — discovery', desc: '90 organic posts and 90 KOL posts surface $GMEE to chart-watchers and crypto-native speculators across CMC\'s wider community ecosystem. This is outbound distribution — putting Gamee in front of audiences actively scanning for their next play.', conn: '<strong>Connects to →</strong> CMC landing page (mid-funnel): the audiences who discover the token here are then converted on the page below' },
+  'kols': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'X KOLs', desc: '32 pieces of content across 24 proven creators — the same roster that delivered 672,941 impressions in campaign 1. Posts, QRTs and sustained cadence keep Gamee visible in the feeds that matter across the full 90-day window.', conn: '<strong>Connects to →</strong> CMC landing page, Telegram, Discord: KOL traffic routes directly into community infrastructure and the token page' },
+  'wsb': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'WallStreetBets', desc: 'A coordinated sequence of 2 posts and a minimum of 3 comments per month across WSB\'s 1M+ X following and 18M+ broader ecosystem. Posts are structured as progressive narrative touchpoints — building familiarity with the Gamee story across multiple exposures — with curated reply amplification in the hours when attention is highest. Frames Gamee as the GameStop of Web3 — a token narrative retail speculators understand and act on.', conn: '<strong>Connects to →</strong> CMC landing page: WSB-driven speculator traffic arrives on a primed, high-sentiment token page ready to convert' },
+  'reddit': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'Reddit', desc: '120 mentions across gaming and crypto subreddits over 90 days. Reaches tens of millions of users not accessible through any Web3-native channel. Serves both player acquisition (r/gaming) and token speculation (crypto subreddits).', conn: '<strong>Connects to →</strong> Telegram & Discord: Reddit-acquired players are funnelled into an active community that gives them a reason to stay' },
+  'zoomies': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'Zoomies', desc: 'Gamee participates alongside Pudgy Penguins, Moonbirds, Azuki and others in a rotating IP gaming platform with monthly seasonal activations. Each new IP brings its own community at zero cost. Positions Gamee as a driver of next-gen Web3 gaming.', conn: '<strong>Connects to →</strong> Discord (player community), CMC/KOLs (forward narrative for speculators), new IP communities entering the ecosystem each season' },
+  'clipping': { tag: 'Top of funnel', tagClass: 'tag-top', title: 'Podcast clipping', desc: 'Every podcast and livestream episode is clipped into multiple short-form assets distributed across X. Across 12 episodes, this turns a single weekly session into a continuous stream of content reaching audiences who would never watch the full episode — keeping Gamee visible in the feed between milestone announcements.', conn: '<strong>Connects to →</strong> X KOLs: strongest clips get amplified by the KOL network at key moments. Podcast clipping turns 12 episodes into a continuous X content stream that compounds reach throughout the campaign' },
+  'cmc-mid': { tag: 'Mid-funnel', tagClass: 'tag-mid', title: 'CMC — landing page conversion', desc: 'Speculator traffic arriving from KOLs, WSB and Reddit lands on a high-sentiment, active token page. A page rich with credible community commentary and consistent content signals conviction — converting curiosity into watchlist adds and token purchases.', conn: '<strong>Connects from →</strong> CMC discovery, X KOLs, WSB, Reddit: all top-of-funnel channels route here at the point of highest intent' },
+  'telegram': { tag: 'Mid-funnel', tagClass: 'tag-mid', title: 'Telegram management', desc: 'Full overhaul of Gamee\'s primary community channel — user flow, moderation, spam removal, daily engagement programme and sticker drops. Transforms Telegram from a passive announcement board into an active community with a daily reason to return.', conn: '<strong>Connects from →</strong> All awareness channels: this is where inbound traffic lands and either stays or bounces. <strong>Connects to →</strong> MAU, revenue: daily engagement directly drives platform activity' },
+  'discord': { tag: 'Mid-funnel', tagClass: 'tag-mid', title: 'Discord management', desc: 'Structural overhaul of moderation, user flow and daily engagement. Built specifically to support Zoomies\' deeper gameplay loop and the IP communities it will attract. Gives serious players a community that reflects the quality of the product.', conn: '<strong>Connects from →</strong> Zoomies, Reddit player acquisition. <strong>Connects to →</strong> MAU growth, Zoomies community retention' },
+  'livestreams': { tag: 'Mid-funnel', tagClass: 'tag-mid', title: 'Livestreams', desc: 'Produced broadcast events maintaining community engagement and anticipating and announcing key milestones — buyback, Gold Fest Season 2, Zoomies launch. Professional moderation and external guests keep each session high quality. Keeps the team visible and present throughout the campaign as an active trust signal for both community members and token holders.', conn: '<strong>Connects to →</strong> Podcast clipping (content multiplied post-broadcast), community trust, token holder conviction' },
+  'token-fomo': { tag: 'Bottom of funnel', tagClass: 'tag-bot', title: 'Token FOMO', desc: 'The compounding result of CMC sentiment architecture, WSB speculator reach, KOL amplification and the buyback narrative landing in a primed market. Buying pressure builds as conviction spreads across multiple channels simultaneously.', conn: '<strong>Driven by →</strong> CMC landing page, WSB, X KOLs, buyback announcement timing' },
+  'mau': { tag: 'Bottom of funnel', tagClass: 'tag-bot', title: 'Increased MAU', desc: 'Daily active users grow as a direct result of Telegram and Discord engagement programmes giving community members a habitual reason to return, combined with new player acquisition from Reddit and Zoomies IP communities.', conn: '<strong>Driven by →</strong> Telegram daily engagement, Discord activation, Reddit player acquisition, Zoomies seasonal content loop' },
+  'revenue': { tag: 'Bottom of funnel', tagClass: 'tag-bot', title: 'Platform revenue', desc: 'More plays from an engaged, growing community. Existing users play more frequently; new users from Reddit, Zoomies IP communities and the broader awareness campaign convert into active players.', conn: '<strong>Driven by →</strong> MAU growth, new community acquisition, Zoomies seasonal engagement loop' },
+  'new-communities': { tag: 'Bottom of funnel', tagClass: 'tag-bot', title: 'New communities', desc: 'Audiences entirely untouched before this campaign — WallStreetBets speculators, Reddit gamers, NFT communities following their IP brands into Zoomies — are now part of the Gamee ecosystem and continue to discover the platform organically.', conn: '<strong>Driven by →</strong> WSB, Reddit, Zoomies IP partnerships. These audiences compound over time as organic content continues to circulate' }
+};
+
+let activeChip = null;
+
+function show(id, chip) {
+  const d = data[id];
+  if (!d) return;
+  if (activeChip) activeChip.classList.remove('active');
+  chip.classList.add('active');
+  activeChip = chip;
+  document.getElementById('d-tag').textContent = d.tag;
+  document.getElementById('d-tag').className = 'detail-tag ' + d.tagClass;
+  document.getElementById('d-title').textContent = d.title;
+  document.getElementById('d-desc').textContent = d.desc;
+  document.getElementById('d-conn').innerHTML = d.conn;
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('visible');
+  if (activeChip) { activeChip.classList.remove('active'); activeChip = null; }
+}
+</script>
+</body>
+</html>
